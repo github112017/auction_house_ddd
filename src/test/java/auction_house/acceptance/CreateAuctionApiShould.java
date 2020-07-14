@@ -29,6 +29,7 @@ public class CreateAuctionApiShould extends ApiTest {
     public static final double ANY_CONQUER_PRICE_AMOUNT = 100.0;
     public static final List<String> ANY_BIDS = emptyList();
     public static final LocalDate ANY_EXPIRATION_DAY = now();
+
     public static final String ANY_OWNER_ID = "AnyOwnerId" + UUID.randomUUID();
 
     private final JSONObject ANY_AUCTION_JSON = createAuctionJsonFrom(ANY_ITEM_NAME, ANY_DESCRIPTION, ANY_INITIAL_BID_AMOUNT, ANY_CONQUER_PRICE_AMOUNT, ANY_BIDS, ANY_EXPIRATION_DAY, ANY_OWNER_ID);
@@ -43,10 +44,7 @@ public class CreateAuctionApiShould extends ApiTest {
         then().
             assertThat().
             statusCode(201).
-            header("Location", allOf(
-                startsWith(RestAssured.baseURI + "auction/"),
-                urlEndsWithValidUUID()
-            ));
+            header("Location", allOf(startsWith(RestAssured.baseURI + "auction/"), urlEndsWithValidUUID()));
     }
 
     @Test
