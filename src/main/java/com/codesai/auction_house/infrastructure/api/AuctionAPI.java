@@ -2,8 +2,8 @@ package com.codesai.auction_house.infrastructure.api;
 
 import com.codesai.auction_house.business.actions.CreateAuctionCommand;
 import com.codesai.auction_house.infrastructure.ActionFactory;
+import com.codesai.auction_house.infrastructure.api.dtos.AuctionDTO;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,14 +37,15 @@ public class AuctionAPI {
 
     private static CreateAuctionCommand parseAuctionCommand(Request request) {
         try {
-            var json = new Gson().fromJson(request.body(), JsonObject.class);
+            var auctionDTO = new Gson().fromJson(request.body(), AuctionDTO.class);
             return new CreateAuctionCommand(
-                json.get("item").getAsJsonObject().get("name").getAsString(),
-                json.get("item").getAsJsonObject().get("description").getAsString(),
-                json.get("initial_bid").getAsDouble(),
-                json.get("conquer_price").getAsDouble(),
-                LocalDate.parse(json.get("expiration_date").getAsString()),
-                json.get("owner_id").getAsString());
+                    auctionDTO.item.name,
+                    auctionDTO.item.description,
+                    auctionDTO.initial_bid,
+                    auctionDTO.conquer_price,
+                    LocalDate.parse(auctionDTO.expiration_date),
+                    auctionDTO.owner_id
+            );
         } catch (Exception e) {
             throw new JsonSyntaxException(e);
         }
